@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -10,9 +11,8 @@ Route::get('/', function () {
 
 Route::post('/login',[LoginController::class, 'authenticate'])->name('login-form');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])
+->middleware('auth')->name('dashboard');
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -27,3 +27,6 @@ Route::post('/signup', [RegisterController::class, 'signup'])->name('signup-form
 Route::get('/logout', [LoginController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
+
+Route::get('/switch-dashboard', [DashboardController::class, 'switchDashboard'])
+    ->name('dashboard.switch');
