@@ -30,3 +30,9 @@ Route::get('/logout', [LoginController::class, 'logout'])
 
 Route::get('/switch-dashboard', [DashboardController::class, 'switchDashboard'])
     ->name('dashboard.switch');
+
+Route::post('/organizer/register', [RegisterController::class, 'registerOrganizer'])
+    ->name('organizer.store');
+
+Route::get('/organizer/register', [RegisterController::class, 'registerOrganizerView'])
+->middleware('auth')->name('organizer.register');

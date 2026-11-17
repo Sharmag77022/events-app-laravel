@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Role;
 
 class RegisterController extends Controller
 {
@@ -23,5 +24,25 @@ class RegisterController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
         return redirect()->route('dashboard');
+    }
+
+    public function registerOrganizer()
+    {
+        $user = Auth::user();
+
+        $organizerRole = Role::where('name', 'organizer')->firstOrFail();
+
+        $user->roles()->syncWithoutDetaching([$organizerRole->id]);
+
+        return redirect()->route('dashboard');
+    }
+
+    public function registerOrganizerView()
+    {
+        $user = Auth::user();
+        if ($user->roles()->where('name', 'organizer')->exists()) {
+            return redirect()->route('dashboard');
+        }
+        return view('organizer.register');
     }
 }
