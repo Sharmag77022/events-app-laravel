@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Organizer\EventsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,3 +37,9 @@ Route::post('/organizer/register', [RegisterController::class, 'registerOrganize
 
 Route::get('/organizer/register', [RegisterController::class, 'registerOrganizerView'])
 ->middleware('auth')->name('organizer.register');
+
+Route::get('/organizer/create-event', [EventsController::class,'create'])
+->middleware('auth')->name('events.create.page');
+
+Route::post('/organizer/create-event', [EventsController::class,'store'])
+->middleware('auth')->name('organizer.events.store');

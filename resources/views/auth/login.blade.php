@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-
-    <h1>Login</h1>
+@extends('layouts.app')
+@section('title', 'User Login')
+@section('content')
+<h1>Login</h1>
 
     <form action="{{ route('login-form') }}" method="POST">
         @csrf
@@ -42,6 +36,4 @@
         Don't have an account?
         <a href="{{ route('signup-form') }}">Sign up</a>
     </p>
-
-</body>
-</html>
+@endsection

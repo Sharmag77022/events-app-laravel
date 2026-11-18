@@ -13,6 +13,7 @@ class Event extends Model
         'organizer_id',
         'title',
         'description',
+        'cover_image',
         'venue',
         'start_date',
         'end_date',

@@ -1,3 +1,6 @@
+@extends('layouts.app')
+@section('title', 'Attandee Dashboard')
+@section('content')
 <div>
     <h1>User Dashboard (Login Success)</h1>
     <br/>
@@ -12,3 +15,4 @@
         </a>
     @endif
 </div>
+@endsection
