@@ -43,3 +43,6 @@ Route::get('/organizer/create-event', [EventsController::class,'create'])
 
 Route::post('/organizer/create-event', [EventsController::class,'store'])
 ->middleware('auth')->name('organizer.events.store');
+
+Route::post('/organizer/events/upload-image', [EventsController::class, 'uploadTrixImage'])
+    ->name('organizer.events.upload-image');

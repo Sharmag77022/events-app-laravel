@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Organizer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Event;
 
 class EventsController extends Controller
@@ -75,5 +76,25 @@ class EventsController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Event published successfully!');
+    }
+
+    public function uploadTrixImage(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user->roles()->where('name', 'organizer')->exists() || $user->active_role !== 'organizer') {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'attachment' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+
+        $path = $request->file('attachment')
+                        ->store('events/descriptions', 'public');
+
+        return response()->json([
+            'url' => url(Storage::url($path)),
+        ]);
     }
 }

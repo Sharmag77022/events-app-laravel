@@ -5,6 +5,10 @@
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/trix@2.1.15/dist/trix.umd.min.js"></script>
+
+    <script>
+        window.trixImageUploadUrl = @json(route('organizer.events.upload-image'));
+    </script>
 @endpush
 
 @push('styles')
