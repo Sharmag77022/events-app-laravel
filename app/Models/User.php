@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+
+    public function hasOrganizerRole(): bool
+    {
+        return $this->roles()->where('name', 'organizer')->exists();
+    }
 }

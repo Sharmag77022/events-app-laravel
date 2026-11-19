@@ -20,7 +20,7 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         if ($user->active_role === 'attendee') {
-            if (!$user->roles()->where('name', 'organizer')->exists()) {
+            if (!$user->hasOrganizerRole()) {
                 abort(403);
             }
             $user->update([

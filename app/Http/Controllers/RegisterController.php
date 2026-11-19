@@ -40,7 +40,7 @@ class RegisterController extends Controller
     public function registerOrganizerView()
     {
         $user = Auth::user();
-        if ($user->roles()->where('name', 'organizer')->exists()) {
+        if ($user->hasOrganizerRole()) {
             return redirect()->route('dashboard');
         }
         return view('organizer.register');

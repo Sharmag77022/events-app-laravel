@@ -14,7 +14,7 @@ class EventsController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->roles()->where('name', 'organizer')->exists() || $user->active_role !== 'organizer') {
+        if (!$user->hasOrganizerRole() || $user->active_role !== 'organizer') {
             abort(403);
         }
 
@@ -25,7 +25,7 @@ class EventsController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->roles()->where('name', 'organizer')->exists() || $user->active_role !== 'organizer') {
+        if (!$user->hasOrganizerRole() || $user->active_role !== 'organizer') {
             abort(403);
         }
 
@@ -82,7 +82,7 @@ class EventsController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->roles()->where('name', 'organizer')->exists() || $user->active_role !== 'organizer') {
+        if (!$user->hasOrganizerRole() || $user->active_role !== 'organizer') {
             abort(403);
         }
 
@@ -96,5 +96,9 @@ class EventsController extends Controller
         return response()->json([
             'url' => url(Storage::url($path)),
         ]);
+    }
+
+    public function getEvents(){
+        $user = Auth::user();
     }
 }

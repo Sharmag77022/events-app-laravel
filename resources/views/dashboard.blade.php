@@ -5,7 +5,7 @@
     <h1>User Dashboard (Login Success)</h1>
     <br/>
     <br/>
-    @if (Auth::user()->roles()->where('name', 'organizer')->exists())
+    @if (Auth::user()->hasOrganizerRole())
         <a href="{{ route('dashboard.switch') }}">
             Switch to Organizer
         </a>
