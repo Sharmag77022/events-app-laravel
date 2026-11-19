@@ -97,6 +97,48 @@ class EventsController extends Controller
 
     public function publish(int $id)
     {
+        $this->updateEvent($id, [
+            'status' => 'published',
+        ]);
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Event published successfully!');
+    }
+
+    public function draft(int $id)
+    {
+        $this->updateEvent($id, [
+            'status' => 'draft',
+        ]);
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Event saved as draft!');
+    }
+
+    public function update(int $id, Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'venue' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+
+        if ($request->hasFile('cover_image')) {
+            $validated['cover_image'] = $request->file('cover_image')
+                ->store('events/covers', 'public');
+        }
+
+        $this->updateEvent($id, $validated);
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Event updated successfully!');
+    }
+
+    private function updateEvent(int $id, array $values)
+    {
         $user = Auth::user();
 
         if (! $user->hasOrganizerRole() || $user->active_role !== 'organizer') {
@@ -110,11 +152,8 @@ class EventsController extends Controller
             abort(403);
         }
 
-        $event->update([
-            'status' => 'published',
-        ]);
+        $event->update($values);
 
-        return redirect()->route('dashboard')
-            ->with('success', 'Event published successfully!');
+        return $event;
     }
 }

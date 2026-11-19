@@ -52,3 +52,9 @@ Route::get('/organizer/events', [EventsController::class, 'getEvents'])
 
 Route::patch('/organizer/events/{id}/publish', [EventsController::class, 'publish'])
     ->middleware('auth')->name('organizer.events.publish');
+
+Route::patch('/organizer/events/{id}/draft', [EventsController::class, 'draft'])
+    ->middleware('auth')->name('organizer.events.draft');
+
+Route::patch('/organizer/events/{id}/update', [EventsController::class, 'update'])
+    ->middleware('auth')->name('organizer.events.update');
