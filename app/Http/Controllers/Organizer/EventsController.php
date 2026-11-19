@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Organizer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Event;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class EventsController extends Controller
 {
@@ -14,7 +14,7 @@ class EventsController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->hasOrganizerRole() || $user->active_role !== 'organizer') {
+        if (! $user->hasOrganizerRole() || $user->active_role !== 'organizer') {
             abort(403);
         }
 
@@ -25,7 +25,7 @@ class EventsController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->hasOrganizerRole() || $user->active_role !== 'organizer') {
+        if (! $user->hasOrganizerRole() || $user->active_role !== 'organizer') {
             abort(403);
         }
 
@@ -42,7 +42,7 @@ class EventsController extends Controller
 
         if ($request->hasFile('cover_image')) {
             $coverImage = $request->file('cover_image')
-                                  ->store('events/covers', 'public');
+                ->store('events/covers', 'public');
         }
 
         Event::create([
@@ -57,14 +57,14 @@ class EventsController extends Controller
         ]);
 
         return redirect()->route('dashboard')
-                         ->with('success', 'Event created successfully!');
+            ->with('success', 'Event created successfully!');
     }
 
     public function uploadTrixImage(Request $request)
     {
         $user = Auth::user();
 
-        if (!$user->hasOrganizerRole() || $user->active_role !== 'organizer') {
+        if (! $user->hasOrganizerRole() || $user->active_role !== 'organizer') {
             abort(403);
         }
 
@@ -73,16 +73,17 @@ class EventsController extends Controller
         ]);
 
         $path = $request->file('attachment')
-                        ->store('events/descriptions', 'public');
+            ->store('events/descriptions', 'public');
 
         return response()->json([
             'url' => url(Storage::url($path)),
         ]);
     }
 
-    public function getEvents(Request $request){
+    public function getEvents(Request $request)
+    {
         $user = Auth::user();
-        if (!$user->hasOrganizerRole() || $user->active_role !== 'organizer') {
+        if (! $user->hasOrganizerRole() || $user->active_role !== 'organizer') {
             abort(403);
         }
         $query = Event::where('organizer_id', $user->id);
@@ -90,6 +91,7 @@ class EventsController extends Controller
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
+
         return $query->latest()->get();
     }
 
@@ -97,7 +99,7 @@ class EventsController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->hasOrganizerRole() || $user->active_role !== 'organizer') {
+        if (! $user->hasOrganizerRole() || $user->active_role !== 'organizer') {
             abort(403);
         }
 
@@ -111,6 +113,7 @@ class EventsController extends Controller
         $event->update([
             'status' => 'published',
         ]);
+
         return redirect()->route('dashboard')
             ->with('success', 'Event published successfully!');
     }
