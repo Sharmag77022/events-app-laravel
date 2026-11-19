@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Role;
+use App\Models\Event;
 
 class User extends Authenticatable
 {
@@ -58,5 +60,10 @@ class User extends Authenticatable
     public function hasOrganizerRole(): bool
     {
         return $this->roles()->where('name', 'organizer')->exists();
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class, 'organizer_id');
     }
 }

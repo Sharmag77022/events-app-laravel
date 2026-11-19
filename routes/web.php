@@ -46,3 +46,9 @@ Route::post('/organizer/create-event', [EventsController::class,'store'])
 
 Route::post('/organizer/events/upload-image', [EventsController::class, 'uploadTrixImage'])
     ->name('organizer.events.upload-image');
+
+Route::get('/organizer/events', [EventsController::class,'getEvents'])
+->middleware('auth')->name('organizer.list.events');
+
+Route::patch('/organizer/events/{id}/publish', [EventsController::class, 'publish'])
+->middleware('auth')->name('organizer.events.publish');

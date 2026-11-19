@@ -60,24 +60,6 @@ class EventsController extends Controller
                          ->with('success', 'Event created successfully!');
     }
 
-    public function publish(int $id)
-    {
-        $event = Event::findOrFail($id);
-
-        // Ensure the organizer owns this event
-        if ($event->organizer_id !== Auth::id()) {
-            abort(403);
-        }
-
-        $event->update([
-            'status' => 'published',
-        ]);
-
-        return redirect()
-            ->back()
-            ->with('success', 'Event published successfully!');
-    }
-
     public function uploadTrixImage(Request $request)
     {
         $user = Auth::user();
@@ -98,7 +80,38 @@ class EventsController extends Controller
         ]);
     }
 
-    public function getEvents(){
+    public function getEvents(Request $request){
         $user = Auth::user();
+        if (!$user->hasOrganizerRole() || $user->active_role !== 'organizer') {
+            abort(403);
+        }
+        $query = Event::where('organizer_id', $user->id);
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        return $query->latest()->get();
+    }
+
+    public function publish(int $id)
+    {
+        $user = Auth::user();
+
+        if (!$user->hasOrganizerRole() || $user->active_role !== 'organizer') {
+            abort(403);
+        }
+
+        $event = Event::findOrFail($id);
+
+        // Check whether this event belongs to the current organizer
+        if ($event->organizer_id !== $user->id) {
+            abort(403);
+        }
+
+        $event->update([
+            'status' => 'published',
+        ]);
+        return redirect()->route('dashboard')
+            ->with('success', 'Event published successfully!');
     }
 }
