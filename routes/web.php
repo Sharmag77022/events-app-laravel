@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Organizer\EventsController;
+use App\Http\Controllers\Attendee\EventsController as AttendeeEvents;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -58,3 +59,8 @@ Route::patch('/organizer/events/{id}/draft', [EventsController::class, 'draft'])
 
 Route::patch('/organizer/events/{id}/update', [EventsController::class, 'update'])
     ->middleware('auth')->name('organizer.events.update');
+
+//Attendee
+
+Route::get('/events', [AttendeeEvents::class, 'index'])
+    ->name('events.index');
